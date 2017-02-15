@@ -6,7 +6,7 @@ use utf8;
 binmode STDOUT, ":utf8";
 
 my $type = $ARGV[0];
-my $filename = 'get_agency_'.$type.'.html';
+my $filename = $out_dir.'/get_agency_'.$type.'.html';
 open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
 binmode $fh, ":utf8";
 

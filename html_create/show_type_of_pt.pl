@@ -2,7 +2,7 @@
 
 require('common.pl');
 
-my $filename = 'type_of_pt.html';
+my $filename = $out_dir.'/type_of_pt.html';
 open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
 
 use utf8;

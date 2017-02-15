@@ -12,5 +12,5 @@ gtfs_dir='/media/Downloads/osm/gtfs/test'
 
 #osm download url and working directory
 osm_url='http://download.geofabrik.de/europe/france/ile-de-france-latest.osm.pbf'
-osm_dir='/media/Downloads/osm/gtfs/geofabrik/'
+osm_dir='/media/Downloads/osm/gtfs/geofabrik'
 

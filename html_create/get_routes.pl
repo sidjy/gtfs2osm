@@ -7,7 +7,7 @@ require('common.pl');
 my $type = $ARGV[0];
 my $agency = $ARGV[1];
 
-my $filename = 'get_routes_'.$type.'_'.$agency.'.html';
+my $filename = $out_dir.'/get_routes_'.$type.'_'.$agency.'.html';
 open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
 binmode $fh, ":utf8";
 

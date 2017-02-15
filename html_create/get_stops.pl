@@ -27,7 +27,7 @@ $p_trip= decode("utf-8", $p_trip);
 $first_stop=pretty_stop($first_stop);
 $last_stop=pretty_stop($last_stop);
 
-my $filename = 'get_stops_'.$type.'_'.$agency.'_'.$route.'_'.$direction.'_'.$trip;
+my $filename = $out_dir.'/get_stops_'.$type.'_'.$agency.'_'.$route.'_'.$direction.'_'.$trip;
 my $html_fn = $filename . '.html';
 #my $geojson_fn = $filename . '.json';
 

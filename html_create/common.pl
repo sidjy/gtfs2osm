@@ -4,6 +4,8 @@ use utf8;
 use DBI;
 $dbh = DBI->connect("DBI:Pg:dbname=stifdb;host=localhost","postgres","newpassword");
 
+$out_dir = '.';
+
 $head_html = <<END_HTML;
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

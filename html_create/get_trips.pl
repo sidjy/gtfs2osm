@@ -15,7 +15,7 @@ my $agency = $ARGV[1];
 my $route = $ARGV[2];
 my $direction = $ARGV[3];
 
-my $filename = 'get_trips_'.$type.'_'.$agency.'_'.$route.'_'.$direction.'.html';
+my $filename = $out_dir.'/get_trips_'.$type.'_'.$agency.'_'.$route.'_'.$direction.'.html';
 
 open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
 binmode $fh, ":utf8";
