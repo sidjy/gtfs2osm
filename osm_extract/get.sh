@@ -1,4 +1,7 @@
 #!/bin/sh
 
-rm ile-de-france-latest.osm.pbf
-wget http://download.geofabrik.de/europe/france/ile-de-france-latest.osm.pbf
+source ../config.sh
+
+rm $osm_dir/*
+wget $osm_url -O $osm_dir/latest.osm.pbf
+

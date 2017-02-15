@@ -1,7 +1,3 @@
-DROP DATABASE stifdb;
-CREATE DATABASE stifdb;
-CREATE EXTENSION postgis;
-
 drop table if exists agency;
 drop table if exists stops;
 drop table if exists routes;

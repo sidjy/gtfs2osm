@@ -1,6 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-#sudo -u postgres dropdb -e stifdb
-#sudo -u postgres createdb -e stifdb
-sudo -u postgres psql -a -U postgres -d stifdb -f create_gtfs_table.sql
-sudo -u postgres psql -a -U postgres -d stifdb -f copy_gtfs_table.sql
+source ../config.sh
+
+psql -a --username=$dbuser --dbname=$dbname --host=$dbhost -f create_gtfs_table.sql
+psql -a --username=$dbuser --dbname=$dbname --host=$dbhost -f $gtfs_dir/copy_gtfs_table.sql
+
+
