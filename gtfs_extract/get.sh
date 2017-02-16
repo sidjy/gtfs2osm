@@ -4,6 +4,7 @@ source ../config.sh
 
 rm $gtfs_dir/*
 
+echo `date` > $gtfs_dir/download_timestamp.txt
 wget $gtfs_url -O $gtfs_dir/gtfs.zip
 unzip $gtfs_dir/gtfs.zip -d $gtfs_dir
 

@@ -2,9 +2,28 @@
 
 use utf8;
 use DBI;
-$dbh = DBI->connect("DBI:Pg:dbname=stifdb;host=localhost","postgres","newpassword");
 
-$out_dir = '.';
+my $conffile = '../config.sh';
+my $config;
+{
+    open my $fh, '<', $conffile or die;
+    local $/ = undef;
+    $config = <$fh>;
+    close $fh;
+}
+
+$config =~ m/dbname=(\w*)/;
+$dbname=$1;
+$config =~ m/dbhost=(\w*)/;
+$dbhost=$1;
+$config =~ m/dbuser=(\w*)/;
+$dbuser=$1;
+$config =~ m/dbpwd=(\w*)/;
+$dbpwd=$1;
+$config =~ m/html_dir=\'([\w\/]*)\'/;
+$out_dir=$1;
+
+$dbh = DBI->connect("DBI:Pg:dbname=$dbname;host=$dbhost", $dbuser, $dbpwd);
 
 $head_html = <<END_HTML;
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
