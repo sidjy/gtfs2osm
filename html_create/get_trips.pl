@@ -261,6 +261,7 @@ my $osm=<<END_OSM;
 <tag k="public_transport:version" v="2"/>
 <tag k="name" v="$r_name"/>
 <tag k="ref" v="$r_ref"/>
+<tag k="ref:FR:STIF" v="$route"/>
 <tag k="network" v="$r_network"/>
 <tag k="colour" v="$r_color"/>
 </relation>
@@ -278,6 +279,7 @@ print $fh <<END_HTML;
 <tr><td>name:$r_name</td></tr>
 <tr><td>network:$r_network</td></tr>
 <tr><td>ref:$r_ref</td></tr>
+<tr><td>ref:FR:STIF:$route</td></tr>
 <tr><td>colour:$r_color</td></tr>
 </table>
 END_HTML
