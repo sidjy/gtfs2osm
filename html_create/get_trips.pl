@@ -1,11 +1,17 @@
 #!/usr/bin/perl
 
+use Encode qw(decode);
 use DateTime;
+use URI::Escape;
 use Pg::hstore;
 require('common.pl');
 
 $| = 1;
 #print "started\n";
+
+use utf8;
+binmode STDOUT, ":utf8";
+
 
 $moy_score=0;
 $nb_trips=0;
@@ -201,6 +207,13 @@ $last_stop=ucfirst($last_stop);
 
 #print "$first_stop → $last_stop ($number)\n";
 
+unless (defined($rm_first)) {
+	$rm_first = $first_stop;
+};
+unless (defined($rm_last)) {
+	$rm_last = $last_stop;
+};
+
 $p_trip=join('|',($agency_name,$route_short_name,$first_stop,$last_stop,$color));
 
 unless (-e $cur_file ) {
@@ -232,7 +245,44 @@ END_HTML
 
 print $fh "</table>";
 
+if ($direction == 0) {
+my $pt = $pt_type[$type];
+my $r_name=$pt.' '.$route_short_name.' : '.$rm_first.' ↔ '.$rm_last;
+my $r_network=$agency_name;
+my $r_ref=$route_short_name;
+my $r_color='#'.$color;
 
+my $osm=<<END_OSM;
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" upload="false">
+<relation id="-1">
+<tag k="type" v="route_master"/>
+<tag k="route_master" v="$pt" />
+<tag k="public_transport:version" v="2"/>
+<tag k="name" v="$r_name"/>
+<tag k="ref" v="$r_ref"/>
+<tag k="network" v="$r_network"/>
+<tag k="colour" v="$r_color"/>
+</relation>
+</osm>
+END_OSM
+
+my $enc_osm=uri_escape_utf8($osm);
+my $url_r="http://localhost:8111/load_data?new_layer=false&data=$enc_osm";
+
+print $fh <<END_HTML;
+<p id="load_josm"></p>
+<table id="osm"><tr>
+<th><a href="$url_r" target="hide">Créer la relation route_master dans JOSM</a> (attention aux doublons)
+</th></tr>
+<tr><td>name:$r_name</td></tr>
+<tr><td>network:$r_network</td></tr>
+<tr><td>ref:$r_ref</td></tr>
+<tr><td>colour:$r_color</td></tr>
+</table>
+END_HTML
+
+};
 
 print $fh $end_html;
 close($fh);
