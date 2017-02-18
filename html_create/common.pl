@@ -20,7 +20,7 @@ $config =~ m/dbuser=(\w*)/;
 $dbuser=$1;
 $config =~ m/dbpwd=(\w*)/;
 $dbpwd=$1;
-$config =~ m/html_dir=\'([\w\/]*)\'/;
+$config =~ m/html_dir=\'([\.\w\/]*)\'/;
 $out_dir=$1;
 
 $dbh = DBI->connect("DBI:Pg:dbname=$dbname;host=$dbhost", $dbuser, $dbpwd);

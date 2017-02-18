@@ -6,7 +6,7 @@ dbpwd=newpassword
 export PGPASSWORD=$dbpwd
 
 #html result directory
-html_dir='/media/Downloads/osm/gtfs/www'
+html_dir='/media/Downloads/osm/sidjy.github.io/gtfs'
 
 #gtfs download url and working directory
 gtfs_url='https://opendata.stif.info/explore/dataset/offre-horaires-tc-gtfs-idf/files/f24cf9dbf6f80c28b8edfdd99ea16aad/download/'
