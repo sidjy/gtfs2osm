@@ -370,7 +370,7 @@ OR nodes.tags -> 'railway' = 'halt'
 OR nodes.tags -> 'railway' = 'tram_stop'
 OR nodes.tags -> 'public_transport' = 'station' )
 AND ST_DWithin(stops.geom, nodes.geom, 0.3/111.325)
-ORDER BY simil
+ORDER BY dist
 LIMIT 10
 
 END_SQL
