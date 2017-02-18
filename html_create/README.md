@@ -2,7 +2,8 @@
 *On suppose la base postgis chargée avec des données OSM et GTFS fraiches.*
 
 ## show_type_of_pt.pl
-Cherche dans les tables GTFS les types de transport présents (0=tram,1=metro,2=train,3=bus,etc.. et crée type_of_pt.html
+Cherche dans les tables GTFS les types de transport présents (0=tram,1=metro,2=train,3=bus,etc.. et crée [type_of_pt.html](
+http://sidjy.github.io/gtfs/type_of_pt.html)
 
 Pour chaque type de transport, on appelle get_agency.pl n (avec n le numéro du type de transport)
 
@@ -21,6 +22,7 @@ Pour chaque route, on appelle get_trips.pl avec 4 paramètres : les 2 précedent
 
 ## get_trips.pl
 Exemple : get_trips.pl 3 758 014195001:95-01 0 pour le bus 95-01 direction aller
+
 On a alors le fichier [get_trips_3_758_014195001:95-01_0.html](http://sidjy.github.io/gtfs/get_trips_3_758_014195001:95-01_0.html)
 
 Ce fichier liste un certain nombre de trips [au sens GTFS](https://developers.google.com/transit/gtfs/reference/trips-file) ou [routes au sens OSM](https://wiki.openstreetmap.org/wiki/Relation:route)
@@ -44,8 +46,8 @@ Pour chaque arrêt, une ligne de tableau :
 Dans cette cas, la similarité (=ressemblance des noms en %) est indiquée + la distance en m.
 
 * à droite, 2 actions JOSM possibles :
-..* compléter arrêt (uniquement si l'arrêt OSM existe mais ne semble pas complet)
-..* zoom JOSM, pour charger la zone dans JOSM. A noter que ce zoom agit aussi sur la vignette
+ - compléter arrêt (uniquement si l'arrêt OSM existe mais ne semble pas complet)
+ - zoom JOSM, pour charger la zone dans JOSM. A noter que ce zoom agit aussi sur la vignette
 
 * tout à droite ou en bas après le tableau, une vignette qui indique le trip
 La ligne est bleue, et va en zig zag sur tous les arrêts mentionnés dans GTFS
