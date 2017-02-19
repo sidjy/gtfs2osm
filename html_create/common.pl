@@ -64,6 +64,7 @@ END_HTML
 
 #@pt_type = ('tram','subway','train','bus','ferry','cablecar','aerialway','funicular');
 @pt_type = ('Tram','Métro','Train','Bus','Ferry','cablecar','Téléphérique','Funiculaire');
+@pt_type_osm = ('tram','subway','train','bus','ferry','cablecar','aerialway','funicular');
 
 
 

@@ -247,21 +247,34 @@ print $fh "</table>";
 
 if ($direction == 0) {
 my $pt = $pt_type[$type];
+my $pt_osm = $pt_type_osm[$type];
 my $r_name=$pt.' '.$route_short_name.' : '.$rm_first.' ↔ '.$rm_last;
 my $r_network=$agency_name;
 my $r_ref=$route_short_name;
 my $r_color='#'.$color;
+
+my $sql_find_rm=<<END_SQL;
+SELECT COUNT(*) FROM relations
+WHERE (tags->'type' = 'route_master'
+and tags->'route_master' = '$pt_osm'
+and tags->'ref' = '$route_short_name');
+END_SQL
+
+my $count_rm = $dbh->selectrow_array($sql_find_rm);
+
+print $sql_find_rm."\n";
+print $count_rm."\n";
 
 my $osm=<<END_OSM;
 <?xml version='1.0' encoding='UTF-8'?>
 <osm version="0.6" upload="false">
 <relation id="-1">
 <tag k="type" v="route_master"/>
-<tag k="route_master" v="$pt" />
+<tag k="route_master" v="$pt_osm" />
 <tag k="public_transport:version" v="2"/>
 <tag k="name" v="$r_name"/>
 <tag k="ref" v="$r_ref"/>
-<tag k="ref:FR:STIF" v="$route"/>
+<tag k="ref:FR:STIF:ExternalCode_Line" v="$route"/>
 <tag k="network" v="$r_network"/>
 <tag k="colour" v="$r_color"/>
 </relation>
@@ -271,18 +284,41 @@ END_OSM
 my $enc_osm=uri_escape_utf8($osm);
 my $url_r="http://localhost:8111/load_data?new_layer=false&data=$enc_osm";
 
+if ($count_rm == 0) {
+
 print $fh <<END_HTML;
 <p id="load_josm"></p>
 <table id="osm"><tr>
 <th><a href="$url_r" target="hide">Créer la relation route_master dans JOSM</a> (attention aux doublons)
 </th></tr>
-<tr><td>name:$r_name</td></tr>
-<tr><td>network:$r_network</td></tr>
-<tr><td>ref:$r_ref</td></tr>
-<tr><td>ref:FR:STIF:$route</td></tr>
-<tr><td>colour:$r_color</td></tr>
+<tr><td>name: $r_name</td></tr>
+<tr><td>network: $r_network</td></tr>
+<tr><td>ref: $r_ref</td></tr>
+<tr><td>ref:FR:STIF:ExternalCode_Line: $route</td></tr>
+<tr><td>colour: $r_color</td></tr>
 </table>
 END_HTML
+} else {
+
+my $sql_find_rm=<<END_SQL;
+SELECT id FROM relations
+WHERE (tags->'type' = 'route_master'
+and tags->'route_master' = '$pt_osm'
+and tags->'ref' = '$route_short_name');
+END_SQL
+
+my $id_rm = $dbh->selectrow_array($sql_find_rm);
+
+
+print $fh <<END_HTML;
+<p>Il y a $count_rm relation route_master dans OpenStreetmap !<p>
+
+<p><a href="http://api.openstreetmap.org/api/0.6/relation/$id_rm">$id_rm</a></p>
+<p><a href="http://localhost:8111/import?url=http://api.openstreetmap.org/api/0.6/relation/$id_rm">charger JOSM</a></p>
+
+END_HTML
+
+};
 
 };
 
