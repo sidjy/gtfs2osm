@@ -262,8 +262,8 @@ END_SQL
 
 my $count_rm = $dbh->selectrow_array($sql_find_rm);
 
-print $sql_find_rm."\n";
-print $count_rm."\n";
+#print $sql_find_rm."\n";
+#print $count_rm."\n";
 
 my $osm=<<END_OSM;
 <?xml version='1.0' encoding='UTF-8'?>
