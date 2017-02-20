@@ -4,6 +4,7 @@ CREATE EXTENSION hstore;
 
 drop table if exists agency;
 drop table if exists stops;
+drop table if exists stop_extensions;
 drop table if exists routes;
 drop table if exists route_types;
 drop table if exists directions;
@@ -51,6 +52,13 @@ create table route_types (
   route_type int PRIMARY KEY,
   description text
 );
+
+-- specifique STIF
+create table stop_extensions (
+  stop_id  text,
+  ZDEr_ID_REF_A text
+);
+
 
 create table routes (
   route_id    text PRIMARY KEY,
