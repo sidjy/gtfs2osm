@@ -38,10 +38,11 @@ binmode $fh, ":utf8";
 #binmode $fhjson, ":utf8";
 
 $sql = <<END_SQL;
-SELECT stop_name,stops.stop_id,stop_lat,stop_lon,arrival_time
-FROM stop_times,stops
+SELECT stop_name,stops.stop_id,stop_lat,stop_lon,arrival_time, zder_id_ref_a
+FROM stop_times,stops,stop_extensions
 WHERE stop_times.trip_id LIKE '$trip'
 AND stop_times.stop_id = stops.stop_id
+AND stop_extensions.stop_id = stops.stop_id
 ORDER BY stop_sequence
 END_SQL
 
@@ -83,6 +84,8 @@ while (@data = $query->fetchrow_array()) {
     $stop_lat{$data[1]}=$data[2];
     $stop_lon{$data[1]}=$data[3];
     $stop_time{$data[1]}=$data[4];
+#specific stif
+    $stop_id_stif{$data[1]}=$data[5];
 }
 
 $grad=gradient(1, 99);
@@ -188,11 +191,14 @@ my $oclick = "map.fitBounds([[$b,$l],[$t,$r]]);";
 my $urlzone = "http://localhost:8111/load_and_zoom?left=$l&right=$r&top=$t&bottom=$b";
 $zone = qq(<a href="$urlzone" onclick="$oclick" target="hide">zoom JOSM</a>);
 
-
+# test
+my $butoclick=$oclick."window.open(".qq('$urlzone','hide').");";
+$anchor = qq(<button class="cpy" data-clipboard-text="public_transport=platform ref:FR:STIF=$stop_id_stif{$data}" onclick="$butoclick">Copy josm data: Ctrl+Maj+V</button>);
+# fin test
 
 print $fh <<END_HTML;
 <tr>
-<td $color_sim>$stop_name{$data}</td>
+<td $color_sim>$stop_name{$data} [$stop_id_stif{$data}]</td>
 <td $color_dist>$result</td>
 <td>$anchor</td>
 <td>$zone</td>
@@ -223,7 +229,19 @@ END_HTML
 
 print $fh <<ENDJSON;
 
-<script type='text/javascript'> // couche "osmfr" 
+<script type='text/javascript'>
+
+var btns = document.querySelectorAll('.cpy');
+    var clipboard = new Clipboard(btns);
+    clipboard.on('success', function(e) {
+        console.log(e);
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+
+
+// couche "osmfr" 
 var osmfr = L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', 
 {
     attribution: 'donn&eacute;es &copy; <a href="http://osm.org/copyright">OpenStreetMap</a>/ODbL - rendu cquest',

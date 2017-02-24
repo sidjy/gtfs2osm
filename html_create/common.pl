@@ -51,6 +51,7 @@ $head_html_leaflet = <<END_HTML;
 		<script src="https://unpkg.com/$in_url/dist/leaflet.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-polylinedecorator/1.1.0/leaflet.polylineDecorator.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
 	</head>
 <body>
 END_HTML
@@ -63,8 +64,31 @@ $end_html = <<END_HTML;
 END_HTML
 
 #@pt_type = ('tram','subway','train','bus','ferry','cablecar','aerialway','funicular');
-@pt_type = ('Tram','Métro','Train','Bus','Ferry','cablecar','Téléphérique','Funiculaire');
-@pt_type_osm = ('tram','subway','train','bus','ferry','cablecar','aerialway','funicular');
+@pt_type = ('Tramway','Métro','Train','Bus','Ferry','Tram à traction par câble','Téléphérique','Funiculaire');
+@pt_type_osm = ('tram','subway','train','bus','ferry','cable_car','aerialway','funicular');
+
+@osm_stop = (
+'railway=tram_stop public_transport=stop_position tram=yes', #tram
+'railway=stop public_transport=stop_position subway=yes', #subway
+'railway=stop public_transport=stop_position train=yes', #train
+'public_transport=stop_position bus=yes', #bus
+'public_transport=stop_position ferry=yes', #ferry
+'railway=tram_stop public_transport=stop_position tram=cable_car', #cablecar (LA)
+'public_transport=stop_position aerialway=yes', #aerialway
+'railway=stop public_transport=stop_position funicular=yes' #funicular
+);
+
+@osm_platform = (
+'railway=platform public_transport=platform', #tram
+'railway=platform public_transport=platform', #subway
+'railway=platform public_transport=platform', #train
+'highway=bus_stop public_transport=platform', #bus
+'amenity=ferry_terminal public_transport=platform', #ferry
+'railway=platform public_transport=platform', #cablecar (LA)
+'aerialway=station public_transport=platform', #aerialway
+'railway=platform public_transport=platform' #funicular
+);
+
 
 
 
