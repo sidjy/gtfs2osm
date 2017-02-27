@@ -381,10 +381,23 @@ var myStyle = {
     "opacity": 0.65
 };
 
+var geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "$r_color",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+
 var myData = $json_obj;
 
 json = L.geoJSON(myData, {
-    style: myStyle
+    style: myStyle,
+    pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    }
 }).addTo(map);
 
 map.fitBounds(json.getBounds());
