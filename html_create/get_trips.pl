@@ -71,7 +71,8 @@ my $elapsedtime =($end->subtract_datetime($start))->seconds();
 #print "SQL get hash execution time : $elapsedtime s\n";
 
 
-print $fh $head_html;
+#print $fh $head_html;
+print $fh $head_html_leaflet;
 
 my $back_fname='get_routes_'.$type.'_'.$agency.'.html';
 
@@ -257,8 +258,11 @@ my $sql_find_rm=<<END_SQL;
 SELECT COUNT(*) FROM relations
 WHERE (tags->'type' = 'route_master'
 and tags->'route_master' = '$pt_osm'
-and tags->'ref' = '$route_short_name');
+and tags->'ref:FR:STIF:ExternalCode_Line' = '$route');
 END_SQL
+
+#recherche sur ref
+#and tags->'ref' = '$route_short_name');
 
 my $count_rm = $dbh->selectrow_array($sql_find_rm);
 
@@ -286,7 +290,22 @@ my $url_r="http://localhost:8111/load_data?new_layer=false&data=$enc_osm";
 
 if ($count_rm == 0) {
 
+
+my $sql_find_rm=<<END_SQL;
+SELECT id FROM relations
+WHERE (tags->'type' = 'route_master'
+and tags->'route_master' = '$pt_osm'
+and tags->'ref' = '$route_short_name');
+END_SQL
+
+my $id_rm = $dbh->selectrow_array($sql_find_rm);
+
+if ($id_rm) {
+$link_id = qq(<p><a href="http://api.openstreetmap.org/api/0.6/relation/$id_rm">$id_rm</a></p>);
+};
+
 print $fh <<END_HTML;
+$link_id
 <p id="load_josm"></p>
 <table id="osm"><tr>
 <th><a href="$url_r" target="hide">Créer la relation route_master dans JOSM</a> (attention aux doublons)
@@ -304,17 +323,75 @@ my $sql_find_rm=<<END_SQL;
 SELECT id FROM relations
 WHERE (tags->'type' = 'route_master'
 and tags->'route_master' = '$pt_osm'
-and tags->'ref' = '$route_short_name');
+and tags->'ref:FR:STIF:ExternalCode_Line' = '$route');
 END_SQL
+
+#recherche sur ref
+#and tags->'ref' = '$route_short_name');
 
 my $id_rm = $dbh->selectrow_array($sql_find_rm);
 
+my $sql_geom=<<END_SQL;
+(select ST_AsGeoJSON(geom) from nodes where id in
+	(select member_id from relation_members where
+		member_type = 'N' and
+		relation_id in (select member_id from relation_members where member_type = 'R' and relation_id = '$id_rm')
+	)
+)
+union
+(select ST_AsGeoJSON(linestring) from ways where id in
+	(select member_id from relation_members where
+		member_type = 'W' and
+		relation_id in (select member_id from relation_members where member_type = 'R' and relation_id = '$id_rm')
+	)
+);
+END_SQL
+
+@result = @{ $dbh->selectcol_arrayref($sql_geom); };
+$json_obj = join(',',@result);
+$json_obj = '{ "type": "GeometryCollection", "geometries": ['.$json_obj.']}';
+
+$full_url = qq("http://api.openstreetmap.org/api/0.6/relation/$id_rm/full");
 
 print $fh <<END_HTML;
 <p>Il y a $count_rm relation route_master dans OpenStreetmap !<p>
 
-<p><a href="http://api.openstreetmap.org/api/0.6/relation/$id_rm">$id_rm</a></p>
+<p><a href="http://api.openstreetmap.org/api/0.6/relation/$id_rm/full">$id_rm</a></p>
 <p><a href="http://localhost:8111/import?url=http://api.openstreetmap.org/api/0.6/relation/$id_rm">charger JOSM</a></p>
+
+<div id="map" style="width: 640px; height: 400px; float: left;"></div>
+<script type='text/javascript'>
+// couche "osmfr"
+var osmfr = L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
+{
+    attribution: 'donn&eacute;es &copy; <a href="http://osm.org/copyright">OpenStreetMap</a>/ODbL - rendu cquest',
+    minZoom: 1,
+    maxZoom: 20
+});
+
+// liste des couches de base
+var baseMaps = {
+    "Rendu FR": osmfr
+};
+map = L.map('map', { center: [47.000,2.000], zoom: 10, layers: [osmfr] } );
+
+var myStyle = {
+    "color": "$r_color",
+    "weight": 5,
+    "opacity": 0.65
+};
+
+var myData = $json_obj;
+
+json = L.geoJSON(myData, {
+    style: myStyle
+}).addTo(map);
+
+map.fitBounds(json.getBounds());
+
+
+
+</script>
 
 END_HTML
 

@@ -52,6 +52,8 @@ $head_html_leaflet = <<END_HTML;
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-polylinedecorator/1.1.0/leaflet.polylineDecorator.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
+		<script src="https://cdn.rawgit.com/jfirebaugh/leaflet-osm/09acdf8f/leaflet-osm.js"></script>
+
 	</head>
 <body>
 END_HTML
