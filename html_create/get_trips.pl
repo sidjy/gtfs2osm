@@ -362,7 +362,8 @@ print $fh <<END_HTML;
 <div id="map" style="width: 640px; height: 400px; float: left;"></div>
 <script type='text/javascript'>
 // couche "osmfr"
-var osmfr = L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
+//var osmfr = L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
+var osmfr = L.tileLayer('http://www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png',
 {
     attribution: 'donn&eacute;es &copy; <a href="http://osm.org/copyright">OpenStreetMap</a>/ODbL - rendu cquest',
     minZoom: 1,

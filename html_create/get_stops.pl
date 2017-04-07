@@ -93,7 +93,7 @@ $color_sim='';
 $color_dist='';
 
 #my $osrm_url = 'http://router.project-osrm.org/match/v1/driving/';
-my $osrm_url = 'http://zblackie.duckdns.org:89/match/v1/driving/';
+my $osrm_url = 'https://zblackie.duckdns.org:89/match/v1/driving/';
 
 print $fh $head_html_leaflet;
 
@@ -243,7 +243,8 @@ var btns = document.querySelectorAll('.cpy');
 
 
 // couche "osmfr" 
-var osmfr = L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', 
+//var osmfr = L.tileLayer('http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', 
+var osmfr = L.tileLayer('http://www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png',
 {
     attribution: 'donn&eacute;es &copy; <a href="http://osm.org/copyright">OpenStreetMap</a>/ODbL - rendu cquest',
     minZoom: 1,
@@ -272,9 +273,9 @@ map = L.map('map', { center: [47.000,2.000], zoom: 10, layers: [osmfr] } );
 json = L.geoJSON(geojsonFeature).addTo(map); 
 
 var myStyle = {
-    "color": "#ff7800",
-    "weight": 5,
-    "opacity": 0.65
+    "color": "#FFFF00",
+    "weight": 10,
+    "opacity": 0.50
 };
 
 var nodes = [];
