@@ -286,7 +286,7 @@ my $osm=<<END_OSM;
 END_OSM
 
 my $enc_osm=uri_escape_utf8($osm);
-my $url_r="http://localhost:8111/load_data?new_layer=false&data=$enc_osm";
+my $url_r="https://localhost:8112/load_data?new_layer=false&data=$enc_osm";
 
 if ($count_rm == 0) {
 
@@ -357,7 +357,7 @@ print $fh <<END_HTML;
 <p>Il y a $count_rm relation route_master dans OpenStreetmap !<p>
 
 <p><a href="http://api.openstreetmap.org/api/0.6/relation/$id_rm/full">$id_rm</a></p>
-<p><a href="http://localhost:8111/import?url=http://api.openstreetmap.org/api/0.6/relation/$id_rm">charger JOSM</a></p>
+<p><a href="https://localhost:8112/import?url=http://api.openstreetmap.org/api/0.6/relation/$id_rm">charger JOSM</a></p>
 
 <div id="map" style="width: 640px; height: 400px; float: left;"></div>
 <script type='text/javascript'>

@@ -126,7 +126,7 @@ END_OSM
 
 my $enc_osm=uri_escape_utf8($osm);
 
-my $url_r="http://localhost:8111/load_data?new_layer=false&data=$enc_osm";
+my $url_r="https://localhost:8112/load_data?new_layer=false&data=$enc_osm";
 
 print $fh <<END_HOME;
 <p><a href="type_of_pt.html">Home</a>
@@ -175,12 +175,12 @@ my $t = $stop_lat{$data}+0.0003;
 
 if ($result eq 'no') {
 
-my $url = "http://localhost:8111/add_node?lat=$stop_lat{$data}&lon=$stop_lon{$data}&addtags=highway=bus_stop%7Cpublic_transport=platform%7Cname=$stop_name{$data}";
+my $url = "https://localhost:8112/add_node?lat=$stop_lat{$data}&lon=$stop_lon{$data}&addtags=highway=bus_stop%7Cpublic_transport=platform%7Cname=$stop_name{$data}";
 
 $anchor = qq(<a href="$url" target="hide">ajouter arrêt</a>);
 } elsif ($sim < 10) {
 
-my $url = "http://localhost:8111/load_and_zoom?left=$l&right=$r&top=$t&bottom=$b&addtags=highway=bus_stop%7Cpublic_transport=platform%7Cname=$stop_name{$data}&select=node$node_id";
+my $url = "https://localhost:8112/load_and_zoom?left=$l&right=$r&top=$t&bottom=$b&addtags=highway=bus_stop%7Cpublic_transport=platform%7Cname=$stop_name{$data}&select=node$node_id";
 
 $anchor = qq(<a href="$url" target="hide">compléter arrêt</a>);
 
@@ -189,7 +189,7 @@ $anchor = '';
 };
 
 my $oclick = "map.fitBounds([[$b,$l],[$t,$r]]);";
-my $urlzone = "http://localhost:8111/load_and_zoom?left=$l&right=$r&top=$t&bottom=$b";
+my $urlzone = "https://localhost:8112/load_and_zoom?left=$l&right=$r&top=$t&bottom=$b";
 $zone = qq(<a href="$urlzone" onclick="$oclick" target="hide">zoom JOSM</a>);
 
 # test
@@ -280,7 +280,7 @@ var myStyle = {
 
 var nodes = [];
 var legs;
-var loadurl="http://localhost:8111/load_object?referrers=true&objects=";
+var loadurl="https://localhost:8112/load_object?referrers=true&objects=";
 
 
 function get_itin() {
