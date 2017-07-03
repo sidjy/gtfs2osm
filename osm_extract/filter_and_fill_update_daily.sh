@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#hack for cron
+cd /home/pi/osm/gtfs_import/osm_extract
+
 source ../config.sh
 
 pushd $osm_dir
